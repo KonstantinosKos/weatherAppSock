@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time Weather Dashboard - KonstantinosKos</title>
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --success-color: #4caf50;
+            --error-color: #f44336;
+            --background-color: #f0f2f5;
+            --card-background: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--background-color);
+            color: var(--text-primary);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 20px;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+            margin: 0;
+        }
+
+        .connection-status {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .connected {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .disconnected {
+            background-color: var(--error-color);
+            color: white;
+        }
+
+        .weather-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 0 20px;
+        }
+
+        .weather-card {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .weather-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .city-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .coordinates {
+            font-size: 0.8em;
+            color: var(--text-secondary);
+        }
+
+        .weather-info {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .prediction-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+
+        .prediction-title {
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+        }
+
+        .timestamp {
+            text-align: right;
+            color: var(--text-secondary);
+            font-size: 0.9em;
+            margin-top: 15px;
+        }
+
+        .weather-icon {
+            font-size: 1.2em;
+        }
+
+        @media (max-width: 600px) {
+            .weather-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Weather Dashboard</h1>
+        <div id="connection-status" class="connection-status disconnected">
+            <span class="status-indicator"></span>
+            <span>Connecting...</span>
+        </div>
+    </div>
+    <div id="weather-container" class="weather-grid"></div>
+
+    <script>
+        let ws;
+        let reconnectAttempts = 0;
+        const maxReconnectAttempts = 5;
+
+        function getWeatherEmoji(condition) {
+            const emojiMap = {
+                'Sunny': '☀️',
+                'Partly Cloudy': '⛅',
+                'Cloudy': '☁️',
+                'Rain': '🌧️',
+                'Thunderstorm': '⛈️',
+                'Clear': '🌤️',
+                'Overcast': '☁️',
+                'Light Rain': '🌦️'
+            };
+            return emojiMap[condition] || '🌡️';
+        }
+
+        function updateConnectionStatus(connected) {
+            const statusElement = document.getElementById('connection-status');
+            if (connected) {
+                statusElement.className = 'connection-status connected';
+                statusElement.innerHTML = `
+                    <span class="status-indicator"></span>
+                    <span>Connected</span>
+                `;
+            } else {
+                statusElement.className = 'connection-status disconnected';
+                statusElement.innerHTML = `
+                    <span class="status-indicator"></span>
+                    <span>Disconnected</span>
+                `;
+            }
+        }
+
+        function connect() {
+            ws = new WebSocket('ws://localhost:8000/ws');
+            
+            ws.onopen = () => {
+                console.log('Connected to weather service');
+                updateConnectionStatus(true);
+                reconnectAttempts = 0;
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                displayWeather(data);
+            };
+
+            ws.onclose = () => {
+                updateConnectionStatus(false);
+                
+                if (reconnectAttempts < maxReconnectAttempts) {
+                    reconnectAttempts++;
+                    console.log(`Attempting to reconnect (${reconnectAttempts}/${maxReconnectAttempts})...`);
+                    setTimeout(connect, 5000);
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function displayWeather(data) {
+            const container = document.getElementById('weather-container');
+            container.innerHTML = '';
+
+            data.current_weather.forEach((weather, index) => {
+                const prediction = data.predictions[index];
+                const card = document.createElement('div');
+                card.className = 'weather-card';
+                
+                card.innerHTML = `
+                    <div class="city-name">
+                        <span>${weather.city} ${getWeatherEmoji(weather.condition)}</span>
+                        <span class="coordinates">
+                            ${weather.coordinates.lat.toFixed(2)}°, 
+                            ${weather.coordinates.lon.toFixed(2)}°
+                        </span>
+                    </div>
+                    
+                    <div class="weather-info">
+                        <span>Temperature</span>
+                        <span>${weather.temperature.celsius}°C / ${weather.temperature.fahrenheit}°F</span>
+                    </div>
+                    
+                    <div class="weather-info">
+                        <span>Condition</span>
+                        <span>${weather.condition}</span>
+                    </div>
+                    
+                    <div class="weather-info">
+                        <span>Humidity</span>
+                        <span>${weather.humidity}%</span>
+                    </div>
+                    
+                    <div class="weather-info">
+                        <span>Wind Speed</span>
+                        <span>${weather.wind_speed.kph} km/h (${weather.wind_speed.mph} mph)</span>
+                    </div>
+                    
+                    <div class="weather-info">
+                        <span>Pressure</span>
+                        <span>${weather.pressure} hPa</span>
+                    </div>
+
+                    <div class="prediction-section">
+                        <div class="prediction-title">Prediction (in 5s)</div>
+                        <div class="weather-info">
+                            <span>Temperature</span>
+                            <span>${prediction.temperature.celsius}°C / ${prediction.temperature.fahrenheit}°F</span>
+                        </div>
+                        <div class="weather-info">
+                            <span>Condition</span>
+                            <span>${prediction.condition} ${getWeatherEmoji(prediction.condition)}</span>
+                        </div>
+                    </div>
+
+                    <div class="timestamp">
+                        Last updated: ${new Date(weather.timestamp).toLocaleTimeString()}
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Start connection when page loads
+        connect();
+    </script>
+</body>
+</html>
