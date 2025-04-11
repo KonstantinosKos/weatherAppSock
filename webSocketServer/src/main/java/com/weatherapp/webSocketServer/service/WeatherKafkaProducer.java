@@ -23,15 +23,17 @@ public class WeatherKafkaProducer {
 
     public void sendCurrentWeather(WeatherPayload weatherDataList) {
         weatherDataList.getCurrentWeather().forEach(data -> {
-                    log.info("Send data: {}", data);
+                    log.info("Send data to CURRENT_WEATHER_TOPIC: {}", data);
                     kafkaTemplate.send(CURRENT_WEATHER_TOPIC, data.getCity(), data);
                 }
         );
     }
 
-    public void sendPredictions(List<PredictionDataTopic> predictionList) {
-        predictionList.forEach(pred ->
-                kafkaTemplate.send(PREDICTIONS_TOPIC, pred.getCity(), pred)
+    public void sendPredictions(WeatherPayload predictionList) {
+        predictionList.getPredictions().forEach(data ->{
+                    log.info("Send data to PREDICTIONS_TOPIC: {}", data);
+                    kafkaTemplate.send(PREDICTIONS_TOPIC, data.getCity(), data);
+                }
         );
     }
 

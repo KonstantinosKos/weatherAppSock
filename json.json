@@ -1,0 +1,203 @@
+{
+  "timestamp": "2025-04-07 17:16:40",
+  "generated_by": "KonstantinosKos",
+  "current_weather": [
+    {
+      "city": "New York",
+      "coordinates": {
+        "lat": 40.7128,
+        "lon": -74.006
+      },
+      "timestamp": "2025-04-07 17:16:40",
+      "temperature": {
+        "celsius": 23.7,
+        "fahrenheit": 74.7
+      },
+      "humidity": 87,
+      "wind_speed": {
+        "kph": 6.4,
+        "mph": 4.0
+      },
+      "pressure": 1018,
+      "condition": "Rain"
+    },
+    {
+      "city": "London",
+      "coordinates": {
+        "lat": 51.5074,
+        "lon": -0.1278
+      },
+      "timestamp": "2025-04-07 17:16:40",
+      "temperature": {
+        "celsius": 12.6,
+        "fahrenheit": 54.7
+      },
+      "humidity": 61,
+      "wind_speed": {
+        "kph": 28.4,
+        "mph": 17.6
+      },
+      "pressure": 1011,
+      "condition": "Partly Cloudy"
+    },
+    {
+      "city": "Tokyo",
+      "coordinates": {
+        "lat": 35.6762,
+        "lon": 139.6503
+      },
+      "timestamp": "2025-04-07 17:16:40",
+      "temperature": {
+        "celsius": 18.4,
+        "fahrenheit": 65.1
+      },
+      "humidity": 90,
+      "wind_speed": {
+        "kph": 5.3,
+        "mph": 3.3
+      },
+      "pressure": 1023,
+      "condition": "Clear"
+    },
+    {
+      "city": "Paris",
+      "coordinates": {
+        "lat": 48.8566,
+        "lon": 2.3522
+      },
+      "timestamp": "2025-04-07 17:16:40",
+      "temperature": {
+        "celsius": 21.4,
+        "fahrenheit": 70.5
+      },
+      "humidity": 80,
+      "wind_speed": {
+        "kph": 10.8,
+        "mph": 6.7
+      },
+      "pressure": 1009,
+      "condition": "Rain"
+    },
+    {
+      "city": "Sydney",
+      "coordinates": {
+        "lat": -33.8688,
+        "lon": 151.2093
+      },
+      "timestamp": "2025-04-07 17:16:40",
+      "temperature": {
+        "celsius": 20.2,
+        "fahrenheit": 68.4
+      },
+      "humidity": 38,
+      "wind_speed": {
+        "kph": 24.3,
+        "mph": 15.1
+      },
+      "pressure": 1023,
+      "condition": "Clear"
+    }
+  ],
+  "predictions": [
+    {
+      "city": "New York",
+      "coordinates": {
+        "lat": 40.7128,
+        "lon": -74.006
+      },
+      "timestamp": "2025-04-07 17:16:45",
+      "temperature": {
+        "celsius": 23.7,
+        "fahrenheit": 74.7
+      },
+      "humidity": 87,
+      "wind_speed": {
+        "kph": 6.4,
+        "mph": 4.0
+      },
+      "pressure": 1018,
+      "condition": "Rain",
+      "predicted": true
+    },
+    {
+      "city": "London",
+      "coordinates": {
+        "lat": 51.5074,
+        "lon": -0.1278
+      },
+      "timestamp": "2025-04-07 17:16:45",
+      "temperature": {
+        "celsius": 12.6,
+        "fahrenheit": 54.7
+      },
+      "humidity": 61,
+      "wind_speed": {
+        "kph": 28.4,
+        "mph": 17.6
+      },
+      "pressure": 1011,
+      "condition": "Partly Cloudy",
+      "predicted": true
+    },
+    {
+      "city": "Tokyo",
+      "coordinates": {
+        "lat": 35.6762,
+        "lon": 139.6503
+      },
+      "timestamp": "2025-04-07 17:16:45",
+      "temperature": {
+        "celsius": 18.4,
+        "fahrenheit": 65.1
+      },
+      "humidity": 90,
+      "wind_speed": {
+        "kph": 5.3,
+        "mph": 3.3
+      },
+      "pressure": 1023,
+      "condition": "Clear",
+      "predicted": true
+    },
+    {
+      "city": "Paris",
+      "coordinates": {
+        "lat": 48.8566,
+        "lon": 2.3522
+      },
+      "timestamp": "2025-04-07 17:16:45",
+      "temperature": {
+        "celsius": 21.4,
+        "fahrenheit": 70.5
+      },
+      "humidity": 80,
+      "wind_speed": {
+        "kph": 10.8,
+        "mph": 6.7
+      },
+      "pressure": 1009,
+      "condition": "Rain",
+      "predicted": true
+    },
+    {
+      "city": "Sydney",
+      "coordinates": {
+        "lat": -33.8688,
+        "lon": 151.2093
+      },
+      "timestamp": "2025-04-07 17:16:45",
+      "temperature": {
+        "celsius": 20.2,
+        "fahrenheit": 68.4
+      },
+      "humidity": 38,
+      "wind_speed": {
+        "kph": 24.3,
+        "mph": 15.1
+      },
+      "pressure": 1023,
+      "condition": "Clear",
+      "predicted": true
+    }
+  ]
+}
